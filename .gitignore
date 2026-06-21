@@ -11,3 +11,7 @@ __pycache__/
 
 # Vendor clone referensi (lihat README untuk link)
 _ref_yahboom_imu/
+
+# Berkas non-program (tidak di-push). Kekurangan elektrikal tetap di-track: ELEKTRIKAL.md
+berkas_lomba/
+docs/superpowers/

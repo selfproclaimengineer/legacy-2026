@@ -32,12 +32,15 @@ public:
     void profileCrouch();
     void setGaitProfile(const GaitProfile& p) { _gait.setProfile(p); }
 
-    HexaArm* arm() { return &_arm; }
+    HexaArm* armRight() { return &_armR; }
+    HexaArm* armLeft()  { return &_armL; }
+    HexaArm* arm()      { return &_armR; }  // default = kanan
 
 private:
     HexaServos _servos;
     HexaGait   _gait;
-    HexaArm    _arm;
+    HexaArm    _armR;
+    HexaArm    _armL;
 
     // Pose badan (radian, mm). Hasil smoothing.
     float _roll, _pitch, _yaw;

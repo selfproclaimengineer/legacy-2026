@@ -5,3 +5,9 @@ __pycache__/
 # Build artifacts uji
 *.exe
 *.o
+
+# File kunci sementara Word
+~$*
+
+# Vendor clone referensi (lihat README untuk link)
+_ref_yahboom_imu/

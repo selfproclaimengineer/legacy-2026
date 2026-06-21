@@ -12,6 +12,10 @@ void Imu::update() {
             _rx[_idx++] = b;
             if (_idx == BUF) {
                 _frame = false;
+                // Validasi checksum (jumlah 10 byte pertama = byte ke-11).
+                uint8_t sum = 0;
+                for (int i = 0; i < BUF - 1; i++) sum += _rx[i];
+                if (sum != _rx[BUF - 1]) continue;   // frame korup, buang
                 if (_rx[1] == 0x53) {   // paket sudut
                     int16_t r = (int16_t)(_rx[3] << 8 | _rx[2]);
                     int16_t p = (int16_t)(_rx[5] << 8 | _rx[4]);

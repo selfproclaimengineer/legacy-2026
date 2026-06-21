@@ -14,7 +14,7 @@ enum ArmPose { ARM_PARK, ARM_REACH, ARM_GRIP, ARM_LIFT, ARM_DROP };
 
 class HexaArm {
 public:
-    HexaArm(HexaServos* servos);
+    HexaArm(HexaServos* servos, const uint8_t (*pinMap)[2]);
     void begin();
     void update();                       // panggil di loop
     void goTo(ArmPose pose, uint32_t durationMs = 600);
@@ -22,6 +22,7 @@ public:
 
 private:
     HexaServos* _servos;
+    const uint8_t (*_pin)[2];
     float _cur[ARM_NUM_SERVOS];
     float _start[ARM_NUM_SERVOS];
     float _goal[ARM_NUM_SERVOS];

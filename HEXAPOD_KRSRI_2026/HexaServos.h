@@ -28,8 +28,8 @@ public:
     void writeRaw(uint8_t driver, uint8_t channel, uint16_t pulseUs);
 
 private:
-    Adafruit_PWMServoDriver _kit0 = Adafruit_PWMServoDriver(PCA9685_0_ADDR);
-    Adafruit_PWMServoDriver _kit1 = Adafruit_PWMServoDriver(PCA9685_1_ADDR);
+    Adafruit_PWMServoDriver _kit0 = Adafruit_PWMServoDriver(PCA9685_0_ADDR, SERVO_I2C_BUS);
+    Adafruit_PWMServoDriver _kit1 = Adafruit_PWMServoDriver(PCA9685_1_ADDR, SERVO_I2C_BUS);
     uint16_t _target[NUM_SERVOS];
     unsigned long _lastUpdate;
     static const unsigned int UPDATE_MS = 20;

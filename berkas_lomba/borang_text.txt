@@ -1,0 +1,47 @@
+BORANG PENDAFTARAN UNLIMITED 2026
+INFORMASI Rinci Robot 
+ NAMA TIM :   ______________________ _
+(gunakan nama tim yang mudah dibaca, maks. 15 karakter) 
+INFORMASI UMUM ROBOT 
+DESAIN ROBOT
+SISTEM KENDALI DAN PENGGERAK 
+SISTEM SENSOR 
+ALGORITMA / STRATEGI 
+SKETSA GAMBAR DESAIN 
+Gunakan halaman tambahan bila diperlukan 
+2. Poin dua
+Robot ini merupakan robot berjalan berjenis hexapod (memiliki enam kaki) dengan bentuk dasar simetri radial. Dimensi keseluruhan robot mencakup panjang pada sumbu longitudinal sebesar 354.4 mm, lebar pada sumbu lateral sebesar 369.3 mm, dan tinggi pada sumbu vertikal mencapai 194.9 mm. Secara keseluruhan, estimasi berat total robot ini berada di kisaran 5.0 kg. Setiap kakinya dirancang dengan tiga Derajat Kebebasan (3-DOF), sehingga secara total robot ini beroperasi menggunakan 18 DOF. 
+Rancangan ini memadukan beberapa jenis material untuk menyeimbangkan kekuatan mekanik dan kemudahan modifikasi:
+Plat Dasar (Base/Chassis): Menggunakan bahan akrilik (Acrylic) yang dibentuk menjadi lempengan heksagonal untuk deck atas dan bawah. Material ini memberikan rigiditas struktural yang tangguh untuk menopang beban 5 kg tanpa melengkung (bending).
+Struktur Kaki dan Penutup Atas: Bagian sendi utama pada kaki (Coxa, Femur, Tibia) serta kubah penutup (Top Dome) dicetak secara 3D menggunakan filamen PLA (Polylactic Acid). PLA dipilih karena rasio kekuatan terhadap beratnya yang baik, sementara desain kubah poligonal berfungsi mengamankan komponen elektronik di dalamnya.
+Pengencang dan Ujung Kaki: Terdapat bracket metal atau besi U yang difungsikan sebagai dudukan ekstra untuk menahan torsi tinggi. Sementara itu, ujung kaki dilengkapi dengan karet berbentuk kerucut untuk menambah traksi pada lantai agar robot tidak mudah tergelincir
+Sistem sasis utama robot menggunakan konfigurasi Double-Deck, di mana lempengan akrilik atas dan bawah mengapit servo pangkal kaki untuk meredam gaya torsi. Ruang kosong di bagian tengah sasis dimanfaatkan secara optimal untuk menempatkan papan distribusi daya (PDB), baterai, dan mikrokontroler agar pusat massa (Center of Gravity) tetap terpusat demi menjaga kestabilan.
+Sistem pergerakannya mengandalkan tiga buah motor servo pada tiap kaki dengan fungsi mekanik berikut:
+Coxa (Pangkal): Berputar pada sumbu vertikal (Yaw) untuk mengayunkan kaki maju dan mundur.
+Femur (Paha Tengah): Berputar pada sumbu horizontal (Pitch) untuk gerakan mengangkat dan menurunkan kaki.
+Tibia (Betis Ujung): Mengontrol jarak jangkauan ujung kaki ke tanah untuk memastikan tumpuan langkah yang solid.
+.
+6. Sketsa Gambar
+ISOMETRIK
+DEPAN
+TAMPAK KANAN
+TAMPAK KIRI
+TAMPAK BELAKANG
+TAMPAK ATAS
+Informasi jenis dan jumlah robot yang digunakan 
+
+Penjelasan umum robot dan bentuk rekaan seluruh robot yang akan dibuat
+Desain/ bentuk rekaan robot yang dibuat, mencakup ukuran/ dimensi robot, berat robot, struktur mekanik, bahan. Dilengkapi dengan sketsa dan gambar bagian-bagian robot.  
+
+Gambar dan penjelasan rancangan dasar robot yang mudah dibaca dan dievaluasi. Gunakan halaman tambahan / terpisah bila dibutuhkan
+Penjelasan sistem prosesor/ mikrokontroler, sistem kendali, pergerakan, aktuator/ motor, effector, dan lain-lain   
+
+mencakup gerakan menggiring dan menendang
+Penjelasan tentang sensor yang digunakan serta rangkaian interface /antarmuka-nya 
+
+mencakup sensor untuk mendeteksi berbagai obyek sesuai ketentuan pada masing-masing divisi (seperti mendeteksi dinding, tiang, target, garis, dan lain-lain)
+Penjelasan strategi yang digunakan untuk mendapatkan nilai selama kontes  
+ 
+Misalnya penjelasan secara singkat tentang strategi bermain, algoritma gerakan, strategi sinkronisasi antar robot, dan lain-lain.
+Sketsa gambar desain lengkap dengan ukuran / dimensi robot. (Gambar dan keterangannya hanya terkait teknis desain robot. Tidak mencantumkan info apapun dalam gambar yang mengindikasikan nama insititusi pengusul.) 
+(ADA di Halaman Tambahan)

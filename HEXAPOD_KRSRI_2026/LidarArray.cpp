@@ -7,14 +7,14 @@ LidarArray::LidarArray() {
 }
 
 void LidarArray::selectMux(uint8_t ch) {
-    Wire.beginTransmission(I2C_MUX_ADDR);
-    Wire.write(1 << ch);
-    Wire.endTransmission();
+    LIDAR_I2C_BUS.beginTransmission(I2C_MUX_ADDR);
+    LIDAR_I2C_BUS.write(1 << ch);
+    LIDAR_I2C_BUS.endTransmission();
 }
 
 bool LidarArray::begin() {
-    Wire.begin();
-    Wire.setClock(400000);
+    LIDAR_I2C_BUS.begin();
+    LIDAR_I2C_BUS.setClock(LIDAR_I2C_CLOCK);
     bool ok = true;
     for (uint8_t i = 0; i < NUM_LIDAR; i++) {
         selectMux(i);

@@ -1,7 +1,7 @@
 #include "Hexapod.h"
 #include <Arduino.h>
 
-Hexapod::Hexapod() : _arm(&_servos) {
+Hexapod::Hexapod() : _armR(&_servos, ARM_PIN_MAP_R), _armL(&_servos, ARM_PIN_MAP_L) {
     _roll = _pitch = _yaw = 0.0f;
     _trans = {0, 0, 0};
 }
@@ -9,14 +9,16 @@ Hexapod::Hexapod() : _arm(&_servos) {
 void Hexapod::begin() {
     _servos.begin();
     _gait.begin();
-    _arm.begin();
+    _armR.begin();
+    _armL.begin();
     profileFlat();
 }
 
 void Hexapod::update() {
     _gait.update();
     solvePose();
-    _arm.update();
+    _armR.update();
+    _armL.update();
     _servos.commit();
 }
 

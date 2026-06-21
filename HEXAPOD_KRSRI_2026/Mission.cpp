@@ -22,8 +22,8 @@ void Mission::enter(MissionState s) {
 void Mission::apply(const NavCmd& c) { _r->walk(c.forward, c.strafe, c.turn); }
 
 // Sekuens lengan ambil korban (non-blocking). return true bila selesai.
-static bool runPick(Hexapod* r, int& step) {
-    HexaArm* a = r->arm();
+// ponytail: default lengan kanan; pilih sisi via x_norm vision saat itu disambung.
+static bool runPick(Hexapod* r, int& step, HexaArm* a) {
     switch (step) {
         case 0: r->stop(); r->profileCrouch(); a->goTo(ARM_REACH); step++; break;
         case 1: if (!a->isMoving()) { a->goTo(ARM_GRIP); step++; } break;
@@ -33,8 +33,7 @@ static bool runPick(Hexapod* r, int& step) {
     return false;
 }
 // Sekuens taruh korban di safe zone.
-static bool runDrop(Hexapod* r, int& step) {
-    HexaArm* a = r->arm();
+static bool runDrop(Hexapod* r, int& step, HexaArm* a) {
     switch (step) {
         case 0: r->stop(); a->goTo(ARM_DROP); step++; break;
         case 1: if (!a->isMoving()) { a->goTo(ARM_PARK); step++; } break;
@@ -70,7 +69,7 @@ void Mission::update() {
             break;
 
         case M_PICK_VICTIM1:
-            if (runPick(_r, _subStep)) enter(M_TO_SZ1);
+            if (runPick(_r, _subStep, _r->arm())) enter(M_TO_SZ1);
             break;
 
         case M_TO_SZ1:
@@ -79,7 +78,7 @@ void Mission::update() {
             break;
 
         case M_DROP_SZ1:
-            if (runDrop(_r, _subStep)) enter(M_TO_VICTIM2);
+            if (runDrop(_r, _subStep, _r->arm())) enter(M_TO_VICTIM2);
             break;
 
         case M_TO_VICTIM2:
@@ -88,12 +87,12 @@ void Mission::update() {
             break;
 
         case M_PICK_VICTIM2:
-            if (runPick(_r, _subStep)) enter(M_TO_SZ2);
+            if (runPick(_r, _subStep, _r->arm())) enter(M_TO_SZ2);
             break;
 
         case M_TO_SZ2:
             apply(Nav::followWallRight(yaw, HEAD_TIMUR, front, right));
-            if (front >= 0 && front <= SZ_REACH_CM) { runDrop(_r, _subStep); enter(M_TO_STAIRS); }
+            if (front >= 0 && front <= SZ_REACH_CM) { runDrop(_r, _subStep, _r->arm()); enter(M_TO_STAIRS); }
             break;
 
         case M_TO_STAIRS:

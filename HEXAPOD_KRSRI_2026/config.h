@@ -108,17 +108,27 @@ const int16_t SERVO_TRIM_US[NUM_SERVOS] = {
 //  Pose dalam derajat 0..180 (sudut servo). KALIBRASI sesuai mekanik.
 // ---------------------------------------------------------------------
 #define ARM_NUM_SERVOS 3
-const uint8_t ARM_PIN_MAP[ARM_NUM_SERVOS][2] = {
-    {0, 12},  // base   (putar)
-    {0, 13},  // shoulder (naik/turun)
-    {0, 14}   // gripper (buka/tutup)
-};
+// Dua lengan: kanan di driver 0, kiri di driver 1 (base, shoulder, gripper).
+const uint8_t ARM_PIN_MAP_R[ARM_NUM_SERVOS][2] = { {0, 12}, {0, 13}, {0, 14} };
+const uint8_t ARM_PIN_MAP_L[ARM_NUM_SERVOS][2] = { {1, 12}, {1, 13}, {1, 14} };
 // Pose: {base, shoulder, gripper}
 const float ARM_POSE_PARK[ARM_NUM_SERVOS]  = { 90,  30,  20 };  // lipat aman
 const float ARM_POSE_REACH[ARM_NUM_SERVOS] = { 90, 150,  70 };  // julur, capit buka
 const float ARM_POSE_GRIP[ARM_NUM_SERVOS]  = { 90, 150,  10 };  // capit tutup
 const float ARM_POSE_LIFT[ARM_NUM_SERVOS]  = { 90,  60,  10 };  // angkat korban
 const float ARM_POSE_DROP[ARM_NUM_SERVOS]  = { 90, 120,  70 };  // taruh di safe zone
+
+// ---------------------------------------------------------------------
+//  BUS I2C — SATU jalur (sesuai PCB: 1x SDA/SCL untuk semua device).
+//  Semua di Wire (SDA 18 / SCL 19 Teensy 4.1): 2x PCA9685 + mux + 6 VL53L1X.
+//  Clock dibatasi 400 kHz karena VL53L1X & TCA9548A maksimum Fast Mode (400k);
+//  walau PCA9685 bisa 1 MHz, di bus bersama clock ikut device terlambat.
+//  (Pisah ke Wire1 untuk servo @1MHz HANYA bila PCB di-rework — lihat README.)
+// ---------------------------------------------------------------------
+#define SERVO_I2C_BUS    Wire
+#define SERVO_I2C_CLOCK  400000
+#define LIDAR_I2C_BUS    Wire
+#define LIDAR_I2C_CLOCK  400000
 
 // ---------------------------------------------------------------------
 //  SENSOR
@@ -134,7 +144,7 @@ const float ARM_POSE_DROP[ARM_NUM_SERVOS]  = { 90, 120,  70 };  // taruh di safe
 #define LIDAR_FRONT_L    5
 
 #define IMU_SERIAL       Serial1
-#define IMU_BAUD         9600
+#define IMU_BAUD         921600   // Yahboom 10-axis (protokol WIT, frame 0x55)
 
 // ---------------------------------------------------------------------
 //  NAVIGASI (closed-loop)

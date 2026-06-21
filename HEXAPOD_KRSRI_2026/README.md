@@ -56,12 +56,25 @@ Konvensi sumbu **body frame**: `+X = kanan, +Y = depan, +Z = atas`, origin pusat
 ## 3. Hardware & Wiring
 
 - **MCU**: Teensy 4.1 (FPU + cepat; cocok untuk IK 6 kaki @50Hz).
-- **Driver servo**: 2× PCA9685 — `0x40` (kaki kanan + lengan) & `0x41` (kaki kiri).
+- **Bus I2C — SATU jalur** (sesuai PCB): semua di **Wire** (SDA 18 / SCL 19) @**400 kHz**:
+  2× PCA9685 + mux TCA9548A + 6× VL53L1X. Clock dibatasi 400 kHz oleh device terlambat
+  (VL53L1X & TCA9548A Fast Mode). Cukup untuk 50 Hz — lihat "Anggaran bus I2C" di bawah.
+  *(Opsi pisah bus servo→Wire1 @1 MHz hanya bila PCB di-rework; tidak perlu sekarang.)*
+- **Driver servo**: 2× PCA9685 — `0x40` (kaki kanan + lengan kanan) & `0x41` (kaki kiri + lengan kiri).
   - Kaki: lihat `SERVO_PIN_MAP` di `config.h`.
-  - Lengan: `ARM_PIN_MAP` (default driver0 ch 12/13/14 = base/shoulder/gripper).
+  - Lengan: `ARM_PIN_MAP_R` (driver0 ch 12/13/14) & `ARM_PIN_MAP_L` (driver1 ch 12/13/14) = base/shoulder/gripper.
 - **Lidar**: 6× VL53L1X di belakang mux I2C **TCA9548A** (`0x70`). Indeks → arti di `config.h`
-  (`LIDAR_FRONT`, `LIDAR_RIGHT`, dst) — **samakan dengan pemasangan fisik**.
-- **IMU**: modul seri WT/JY (WT901 dll), UART 9600 → `Serial1` (pin 0/1 Teensy).
+  (`LIDAR_FRONT`, `LIDAR_RIGHT`, dst) — **samakan dengan pemasangan fisik**. Pasang < 10 cm (dinding arena 10 cm).
+- **Pull-up I2C**: 1 bus dengan banyak device + trace PCB → pakai pull-up 2.2k–4.7k untuk integritas sinyal di 400 kHz.
+
+### Anggaran bus I2C (kenapa 1 bus @400 kHz cukup untuk 50 Hz)
+1 byte I2C @400 kHz ≈ 22,5 µs. `writeMicroseconds` per servo ≈ 6 byte ≈ ~160 µs → 18 servo ≈ **~2,9 ms**
+per refresh, hanya ~15% dari jendela 20 ms (50 Hz). Pembacaan lidar non-blocking (1 sensor/loop) hanya
+beberapa transaksi pendek → sisa headroom besar. **Bottleneck lama bukan jumlah bus, tapi lidar blocking
+(~120 ms) yang sudah dihapus** (lihat `LidarArray`). Jika kelak refresh perlu > 50 Hz atau device bertambah,
+optimasi berikutnya adalah **batch tulis 16 channel PCA9685 dalam 1 transaksi** (register auto-increment) —
+belum diperlukan sekarang.
+- **IMU**: **Yahboom 10-axis** (protokol WIT, frame 0x55), UART **921600** → `Serial1` (pin 0/1 Teensy).
 - **Tombol START**: `PIN_BUTTON_START` (30) ke GND (INPUT_PULLUP).
 - **Power**: servo butuh suplai terpisah yang kuat (RDS3235 bisa tarik banyak arus).
   GND servo & Teensy harus tersambung. **Beri kapasitor & pantau tegangan** (lihat §8).

@@ -9,6 +9,7 @@ HexaServos::HexaServos() {
 void HexaServos::begin() {
     _kit0.begin();
     _kit1.begin();
+    SERVO_I2C_BUS.setClock(SERVO_I2C_CLOCK);   // bus servo terpisah, kencang
     _kit0.setPWMFreq(SERVO_FREQ);
     _kit1.setPWMFreq(SERVO_FREQ);
     uint16_t center = (SERVO_PULSE_MIN + SERVO_PULSE_MAX) / 2;

@@ -1,7 +1,8 @@
 #include "HexaArm.h"
 
-HexaArm::HexaArm(HexaServos* servos) {
+HexaArm::HexaArm(HexaServos* servos, const uint8_t (*pinMap)[2]) {
     _servos = servos;
+    _pin = pinMap;
     _moving = false;
     _t0 = _dur = 0;
     for (int i = 0; i < ARM_NUM_SERVOS; i++)
@@ -49,5 +50,5 @@ void HexaArm::writeAngle(uint8_t i, float deg) {
     deg = clampf(deg, 0.0f, 180.0f);
     uint16_t pulse = (uint16_t)(SERVO_PULSE_MIN +
                      (deg / 180.0f) * (SERVO_PULSE_MAX - SERVO_PULSE_MIN));
-    _servos->writeRaw(ARM_PIN_MAP[i][0], ARM_PIN_MAP[i][1], pulse);
+    _servos->writeRaw(_pin[i][0], _pin[i][1], pulse);
 }

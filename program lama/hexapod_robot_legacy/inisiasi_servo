@@ -1,0 +1,44 @@
+import sys
+import board
+import busio
+from adafruit_pca9685 import PCA9685
+import time
+
+# Inisialisasi bus I2C
+i2c = busio.I2C(board.SCL, board.SDA)
+
+# Inisialisasi objek PCA9685
+pca = PCA9685(i2c)
+
+# Frekuensi PWM (biasanya 50 Hz)
+pca.frequency = 50
+
+# Fungsi untuk mengatur posisi servo
+def set_servo_position(channel, angle):
+    pulse_width = int((angle / 180.0) * (pca.channels[channel].duty_cycle_range) + pca.channels[channel].duty_cycle)
+    pca.channels[channel].duty_cycle = pulse_width
+
+# Fungsi untuk menyesuaikan posisi servo
+def adjust_servo(channel, angle):
+    set_servo_position(channel, angle)
+    time.sleep(0.1)
+
+# Fungsi untuk membaca input dari terminal dan mengatur servo
+def main():
+    positions = [90, 90, 90, 90, 90]  # Inisialisasi sudut park untuk setiap servo
+    servo_count = len(positions)
+
+    for channel in range(servo_count):
+        print(f"Inisiasi servo pada channel {channel} ke sudut park {positions[channel]} derajat.")
+        adjust_servo(channel, positions[channel])
+
+        if channel < servo_count - 1:
+            next_servo = input("Tekan 'n' untuk melanjutkan ke servo berikutnya: ")
+            if next_servo.lower() != 'n':
+                print("Pengaturan servo dihentikan.")
+                break
+
+    print("Inisialisasi dan penyesuaian servo selesai.")
+
+if __name__ == "__main__":
+    main()

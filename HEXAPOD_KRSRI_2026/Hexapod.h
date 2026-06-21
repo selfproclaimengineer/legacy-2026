@@ -1,0 +1,50 @@
+#ifndef HEXAPOD_H
+#define HEXAPOD_H
+
+// Fasad: SATU-SATUNYA class yang dipakai di .ino & misi.
+// Mengurus: gait -> body transform -> IK per kaki -> pulse servo (terkalibrasi).
+#include "config.h"
+#include "types.h"
+#include "HexaServos.h"
+#include "HexaGait.h"
+#include "HexaArm.h"
+#include "LegIK.h"
+
+class Hexapod {
+public:
+    Hexapod();
+    void begin();
+    void update();                       // panggil tiap loop
+
+    // Gerak: maju(+)/mundur(-), geser kanan(+)/kiri(-), putar CCW(+)/CW(-). -1..1
+    void walk(float forward, float strafe = 0.0f, float turn = 0.0f);
+    void stop();
+
+    // Stabilisasi badan dari IMU (derajat). Di-clamp + deadband + smooth.
+    void setStabilization(float rollDeg, float pitchDeg);
+
+    // Pose badan manual (derajat & mm) -- untuk menunduk/menjinjit dsb.
+    void setBodyTranslation(float x, float y, float z);
+
+    // Profil gait medan.
+    void profileFlat();
+    void profileStairs();
+    void profileCrouch();
+    void setGaitProfile(const GaitProfile& p) { _gait.setProfile(p); }
+
+    HexaArm* arm() { return &_arm; }
+
+private:
+    HexaServos _servos;
+    HexaGait   _gait;
+    HexaArm    _arm;
+
+    // Pose badan (radian, mm). Hasil smoothing.
+    float _roll, _pitch, _yaw;
+    Vec3  _trans;
+
+    void solvePose();
+    uint16_t angleToPulse(uint8_t servoID, float geoAngleDeg, float baseline);
+};
+
+#endif
